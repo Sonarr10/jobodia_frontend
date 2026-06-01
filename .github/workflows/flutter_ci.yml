@@ -1,0 +1,51 @@
+name: Flutter CI
+
+# Trigger the workflow on pushes or pull requests to the main branch
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    # We use macos-latest since it has Xcode tools pre-installed if you need iOS builds later,
+    # but ubuntu-latest is faster/cheaper if you are only testing Android/Web.
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the code from Git
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup Java environment (Required for Android building/testing)
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+
+      # 3. Setup Flutter Environment
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.0" # Matches your current local version
+          channel: "stable"
+          cache: true # Caches dependencies to speed up subsequent runs
+
+      # 4. Get Project Dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 5. Check Code Formatting
+      # This fails the build if your code isn't formatted with 'flutter format'
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      # 6. Static Code Analysis (Linter rules)
+      - name: Analyze code
+        run: flutter analyze
+
+      # 7. Run Unit & Widget Tests
+      - name: Run tests
+        run: flutter test
