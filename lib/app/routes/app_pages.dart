@@ -5,6 +5,8 @@ import 'package:jobodia_frontend/features/auth/view/otp_verification_screen.dart
 import 'package:jobodia_frontend/features/home/view/home_screen.dart';
 import 'package:jobodia_frontend/features/job_detail/controller/job_detail_controller.dart';
 import 'package:jobodia_frontend/features/job_detail/view/job_detail_screen.dart';
+import 'package:jobodia_frontend/features/profile/controller/profile_controller.dart';
+import 'package:jobodia_frontend/features/profile/view/profile_screen.dart';
 
 /// Maps route names to pages for GetX navigation.
 abstract final class AppPages {
@@ -20,6 +22,13 @@ abstract final class AppPages {
       page: () => const JobDetailScreen(),
       binding: BindingsBuilder(
         () => Get.lazyPut<JobDetailController>(JobDetailController.new),
+      ),
+    ),
+    GetPage(
+      name: AppRoutes.profile,
+      page: () => const ProfileScreen(),
+      binding: BindingsBuilder(
+        () => Get.lazyPut<ProfileController>(ProfileController.new),
       ),
     ),
   ];

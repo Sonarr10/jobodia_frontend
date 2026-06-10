@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jobodia_frontend/app/routes/app_routes.dart';
 import 'package:jobodia_frontend/core/constants/app_colors.dart';
 import 'package:jobodia_frontend/features/auth/controller/auth_controller.dart';
+import 'package:jobodia_frontend/features/job_detail/controller/job_detail_controller.dart';
+import 'package:jobodia_frontend/features/job_detail/view/job_detail_screen.dart';
+import 'package:jobodia_frontend/features/profile/controller/profile_controller.dart';
+import 'package:jobodia_frontend/features/profile/view/profile_screen.dart';
 
 /// Simple screen shown after fake login succeeds.
 class HomeScreen extends GetView<AuthController> {
@@ -65,9 +68,27 @@ class HomeScreen extends GetView<AuthController> {
               ),
               const SizedBox(height: 24),
               FilledButton.icon(
-                onPressed: () => Get.toNamed(AppRoutes.jobDetail),
+                onPressed: () => Get.to(
+                  () => const JobDetailScreen(),
+                  binding: BindingsBuilder(
+                    () => Get.lazyPut<JobDetailController>(
+                      JobDetailController.new,
+                    ),
+                  ),
+                ),
                 icon: const Icon(Icons.work_outline_rounded),
                 label: const Text('Open Job Detail'),
+              ),
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
+                onPressed: () => Get.to(
+                  () => const ProfileScreen(),
+                  binding: BindingsBuilder(
+                    () => Get.lazyPut<ProfileController>(ProfileController.new),
+                  ),
+                ),
+                icon: const Icon(Icons.person_outline_rounded),
+                label: const Text('Open Profile'),
               ),
             ],
           ),
