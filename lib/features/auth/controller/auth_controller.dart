@@ -87,6 +87,8 @@ class AuthController extends GetxController {
         name: 'Test User',
         email: AuthRepository.fakeEmail,
         role: 'Candidate',
+        avatarUrl:
+            'https://upload.wikimedia.org/wikipedia/commons/5/56/Donald_Trump_official_portrait.jpg',
       );
       Get.offAllNamed(AppRoutes.home);
     } finally {
