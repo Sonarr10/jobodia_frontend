@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:jobodia_frontend/features/job_detail/model/job_detail_model.dart';
+import 'package:jobodia_frontend/features/job_detail/view/widgets/apply_confirmation_dialog.dart';
 
 class JobDetailController extends GetxController {
   final RxBool isSaved = false.obs;
@@ -42,28 +42,18 @@ class JobDetailController extends GetxController {
 
   void applyForJob() {
     Get.dialog<void>(
-      CupertinoAlertDialog(
-        title: const Text('Apply for this job?'),
-        content: Text(
-          'Do you want to apply for ${job.title} at ${job.companyName}?',
-        ),
-        actions: [
-          CupertinoDialogAction(
-            onPressed: Get.back,
-            child: const Text('Cancel'),
-          ),
-          CupertinoDialogAction(
-            isDefaultAction: true,
-            onPressed: () {
-              Get.back<void>();
-              Get.snackbar(
-                'Application sent',
-                'Your application has been submitted.',
-              );
-            },
-            child: const Text('Apply'),
-          ),
-        ],
+      ApplyConfirmationDialog(
+        title: 'Are you absolutely sure?',
+        message:
+            'This will apply you to ${job.title} at ${job.companyName}. Please confirm before continuing.',
+        onCancel: Get.back,
+        onContinue: () {
+          Get.back<void>();
+          Get.snackbar(
+            'Application sent',
+            'Your application has been submitted.',
+          );
+        },
       ),
       barrierDismissible: false,
     );

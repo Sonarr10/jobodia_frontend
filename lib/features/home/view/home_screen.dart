@@ -7,6 +7,8 @@ import 'package:jobodia_frontend/features/home/view/widgets/home_search_bar.dart
 import 'package:jobodia_frontend/features/home/view/widgets/home_tab_bar.dart';
 import 'package:jobodia_frontend/features/home/view/widgets/home_top_bar.dart';
 import 'package:jobodia_frontend/features/home/view/widgets/job_feed_card.dart';
+import 'package:jobodia_frontend/features/job_detail/controller/job_detail_controller.dart';
+import 'package:jobodia_frontend/features/job_detail/view/job_detail_screen.dart';
 
 /// Home feed screen shown after login succeeds.
 class HomeScreen extends GetView<AuthController> {
@@ -75,7 +77,17 @@ class HomeScreen extends GetView<AuthController> {
                     itemCount: homeController.jobs.length,
                     itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.only(bottom: 14),
-                      child: JobFeedCard(job: homeController.jobs[index]),
+                      child: GestureDetector(
+                        onTap: () => Get.to(
+                          () => const JobDetailScreen(),
+                          binding: BindingsBuilder(
+                            () => Get.lazyPut<JobDetailController>(
+                              JobDetailController.new,
+                            ),
+                          ),
+                        ),
+                        child: JobFeedCard(job: homeController.jobs[index]),
+                      ),
                     ),
                   ),
                 ),
