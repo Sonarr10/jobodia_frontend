@@ -89,6 +89,35 @@ class LoginForm extends GetView<AuthController> {
         ),
         const SizedBox(height: 26),
         const _DemoAccountCard(),
+        const SizedBox(height: 12),
+        const _TemporaryTestNavigation(),
+      ],
+    );
+  }
+}
+
+class _TemporaryTestNavigation extends StatelessWidget {
+  const _TemporaryTestNavigation();
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 4,
+      runSpacing: 2,
+      children: [
+        TextButton(
+          onPressed: () => Get.toNamed(AppRoutes.aboutUs),
+          child: const Text('About Us'),
+        ),
+        TextButton(
+          onPressed: () => Get.toNamed(AppRoutes.privacyPolicy),
+          child: const Text('Privacy & Policy'),
+        ),
+        TextButton(
+          onPressed: () => Get.toNamed(AppRoutes.report),
+          child: const Text('Report'),
+        ),
       ],
     );
   }

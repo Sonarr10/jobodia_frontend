@@ -6,4 +6,7 @@ abstract final class AppRoutes {
   static const profile = '/profile';
   static const otpVerification = '/otp-verification';
   static const resetPassword = '/reset-password';
+  static const aboutUs = '/about-us';
+  static const privacyPolicy = '/privacy-policy';
+  static const report = '/report';
 }
