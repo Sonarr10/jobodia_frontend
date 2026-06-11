@@ -614,6 +614,16 @@ void main() {
     expect(find.text('General'), findsOneWidget);
     expect(find.text('Leave feedback'), findsOneWidget);
     expect(find.text('Terms and Conditions'), findsOneWidget);
+
+    await tester.tap(
+      find.byWidgetPredicate(
+        (widget) => widget is Switch || widget is CupertinoSwitch,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(Get.isDarkMode, isTrue);
+    Get.changeThemeMode(ThemeMode.light);
   });
 
   testWidgets('pricing plan tabs and yearly toggle update prices', (

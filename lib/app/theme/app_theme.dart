@@ -14,4 +14,16 @@ abstract final class AppTheme {
       fontFamily: 'Arial',
     );
   }
+
+  static ThemeData get dark {
+    return ThemeData(
+      useMaterial3: true,
+      scaffoldBackgroundColor: const Color(0xFF101214),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.primary,
+        brightness: Brightness.dark,
+      ),
+      fontFamily: 'Arial',
+    );
+  }
 }

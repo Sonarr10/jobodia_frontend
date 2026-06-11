@@ -11,12 +11,31 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _darkMode = false;
+  late bool _darkMode;
+
+  @override
+  void initState() {
+    super.initState();
+    _darkMode = Get.isDarkMode;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor = isDark
+        ? const Color(0xFF101214)
+        : const Color(0xFFF5F5F5);
+    final foregroundColor = isDark ? Colors.white : Colors.black;
+    final sectionColor = isDark
+        ? const Color(0xFFB7BDC3)
+        : const Color(0xFF6F7378);
+    final groupColor = isDark ? const Color(0xFF1A1D20) : Colors.white;
+    final borderColor = isDark
+        ? const Color(0xFF2A2E33)
+        : const Color(0xFFE9E9E9);
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
@@ -27,62 +46,79 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onPressed: Get.back,
                   icon: const Icon(Icons.chevron_left_rounded, size: 30),
                 ),
-                const Expanded(
+                Expanded(
                   child: Text(
                     'Settings',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                    style: TextStyle(
+                      color: foregroundColor,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 48),
               ],
             ),
             const SizedBox(height: 18),
-            const _SectionTitle('General'),
+            _SectionTitle('General', color: sectionColor),
             const SizedBox(height: 8),
             _SettingsGroup(
+              color: groupColor,
+              borderColor: borderColor,
               children: [
                 _SettingsTile(
                   icon: Icons.thumb_up_alt_outlined,
                   title: 'Leave feedback',
                   subtitle: 'Help us improve the app experience.',
+                  foregroundColor: foregroundColor,
+                  mutedColor: isDark
+                      ? const Color(0xFFA5ABB1)
+                      : const Color(0xFF84888D),
                   onTap: () => _showMockSnack('Feedback'),
                 ),
                 _SettingsTile(
                   icon: Icons.dark_mode_outlined,
                   title: 'Switch themes',
+                  foregroundColor: foregroundColor,
                   trailing: Switch.adaptive(
                     value: _darkMode,
-                    onChanged: (value) => setState(() => _darkMode = value),
+                    onChanged: _toggleTheme,
                   ),
                 ),
                 _SettingsTile(
                   icon: Icons.public_rounded,
                   title: 'Clear cache',
+                  foregroundColor: foregroundColor,
                   onTap: () => _showMockSnack('Cache cleared'),
                 ),
                 _SettingsTile(
                   icon: Icons.help_outline_rounded,
                   title: 'FAQ',
+                  foregroundColor: foregroundColor,
                   showChevron: true,
                   onTap: () => _showMockSnack('FAQ'),
                 ),
               ],
             ),
             const SizedBox(height: 20),
-            const _SectionTitle('Legal'),
+            _SectionTitle('Legal', color: sectionColor),
             const SizedBox(height: 8),
             _SettingsGroup(
+              color: groupColor,
+              borderColor: borderColor,
               children: [
                 _SettingsTile(
                   icon: Icons.description_outlined,
                   title: 'Data Privacy Terms',
+                  foregroundColor: foregroundColor,
                   showChevron: true,
                   onTap: () => _showMockSnack('Data Privacy Terms'),
                 ),
                 _SettingsTile(
                   icon: Icons.library_books_outlined,
                   title: 'Terms and Conditions',
+                  foregroundColor: foregroundColor,
                   showChevron: true,
                   onTap: () => _showMockSnack('Terms and Conditions'),
                 ),
@@ -92,7 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             TextButton.icon(
               onPressed: () => _showMockSnack('Sign out'),
               style: TextButton.styleFrom(
-                foregroundColor: Colors.black,
+                foregroundColor: foregroundColor,
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 8,
@@ -124,45 +160,53 @@ class _SettingsScreenState extends State<SettingsScreen> {
       margin: const EdgeInsets.all(16),
     );
   }
+
+  void _toggleTheme(bool value) {
+    setState(() => _darkMode = value);
+    Get.changeThemeMode(value ? ThemeMode.dark : ThemeMode.light);
+  }
 }
 
 class _SectionTitle extends StatelessWidget {
-  const _SectionTitle(this.title);
+  const _SectionTitle(this.title, {required this.color});
 
   final String title;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: const TextStyle(
-        color: Color(0xFF6F7378),
-        fontSize: 13,
-        fontWeight: FontWeight.w800,
-      ),
+      style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w800),
     );
   }
 }
 
 class _SettingsGroup extends StatelessWidget {
-  const _SettingsGroup({required this.children});
+  const _SettingsGroup({
+    required this.children,
+    required this.color,
+    required this.borderColor,
+  });
 
   final List<Widget> children;
+  final Color color;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE9E9E9)),
+        border: Border.all(color: borderColor),
       ),
       child: Column(
         children: [
           for (var index = 0; index < children.length; index++) ...[
             children[index],
             if (index != children.length - 1)
-              const Divider(height: 1, indent: 52, color: Color(0xFFEDEDED)),
+              Divider(height: 1, indent: 52, color: borderColor),
           ],
         ],
       ),
@@ -178,6 +222,8 @@ class _SettingsTile extends StatelessWidget {
     this.trailing,
     this.showChevron = false,
     this.onTap,
+    this.foregroundColor = Colors.black,
+    this.mutedColor = const Color(0xFF84888D),
   });
 
   final IconData icon;
@@ -186,6 +232,8 @@ class _SettingsTile extends StatelessWidget {
   final Widget? trailing;
   final bool showChevron;
   final VoidCallback? onTap;
+  final Color foregroundColor;
+  final Color mutedColor;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +244,11 @@ class _SettingsTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
         child: Row(
           children: [
-            Icon(icon, color: const Color(0xFF44484C), size: 20),
+            Icon(
+              icon,
+              color: foregroundColor.withValues(alpha: 0.76),
+              size: 20,
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -204,8 +256,8 @@ class _SettingsTile extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      color: Colors.black,
+                    style: TextStyle(
+                      color: foregroundColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w800,
                     ),
@@ -214,8 +266,8 @@ class _SettingsTile extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle!,
-                      style: const TextStyle(
-                        color: Color(0xFF84888D),
+                      style: TextStyle(
+                        color: mutedColor,
                         fontSize: 12,
                         height: 1.2,
                       ),

@@ -23,6 +23,8 @@ class JobodiaApp extends StatelessWidget {
       initialRoute: AppRoutes.login,
       getPages: AppPages.pages,
       theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.light,
     );
   }
 }
