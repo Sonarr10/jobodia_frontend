@@ -531,6 +531,27 @@ void main() {
     expect(find.text('How can I help you today?'), findsOneWidget);
   });
 
+  testWidgets('home notification bell opens notifications', (tester) async {
+    await tester.pumpWidget(const JobodiaApp());
+    await tester.pumpAndSettle();
+
+    final fields = find.byType(TextField);
+    await tester.enterText(fields.at(0), 'test@gmail.com');
+    await tester.enterText(fields.at(1), '123456');
+    await tester.tap(find.widgetWithText(FilledButton, 'Log in'));
+    await tester.pump();
+
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.notifications_none_rounded));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Notifications'), findsOneWidget);
+    expect(find.text('New job match'), findsOneWidget);
+    expect(find.text('AI CV update'), findsOneWidget);
+  });
+
   testWidgets('home layers nav opens CV builder', (tester) async {
     await tester.pumpWidget(const JobodiaApp());
     await tester.pumpAndSettle();

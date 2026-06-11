@@ -11,6 +11,7 @@ import 'package:jobodia_frontend/features/home/view/widgets/home_top_bar.dart';
 import 'package:jobodia_frontend/features/home/view/widgets/job_feed_card.dart';
 import 'package:jobodia_frontend/features/job_detail/controller/job_detail_controller.dart';
 import 'package:jobodia_frontend/features/job_detail/view/job_detail_screen.dart';
+import 'package:jobodia_frontend/features/notifications/view/notifications_screen.dart';
 
 /// Home feed screen shown after login succeeds.
 class HomeScreen extends GetView<AuthController> {
@@ -39,7 +40,11 @@ class HomeScreen extends GetView<AuthController> {
                       HomeTopBar(
                         name: 'Jumnert',
                         avatarUrl: user?.avatarUrl,
-                        onNotifications: () {},
+                        onNotifications: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const NotificationsScreen(),
+                          ),
+                        ),
                       ),
                       const SizedBox(
                         width: 0,
