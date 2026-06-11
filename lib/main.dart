@@ -4,10 +4,21 @@ import 'package:jobodia_frontend/app/bindings/initial_binding.dart';
 import 'package:jobodia_frontend/app/routes/app_pages.dart';
 import 'package:jobodia_frontend/app/routes/app_routes.dart';
 import 'package:jobodia_frontend/app/theme/app_theme.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const JobodiaApp());
+  await LiquidGlassWidgets.initialize();
+  runApp(
+    LiquidGlassWidgets.wrap(
+      child: const JobodiaApp(),
+      theme: GlassThemeData.simple(
+        blur: 10,
+        thickness: 24,
+        quality: GlassQuality.standard,
+      ),
+    ),
+  );
 }
 
 /// App entry widget. GetMaterialApp enables GetX navigation and bindings.

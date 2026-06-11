@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jobodia_frontend/features/home/view/widgets/app_bottom_navigation_bar.dart';
-import 'package:jobodia_frontend/features/home/view/widgets/app_navigation.dart';
+import 'package:jobodia_frontend/features/pricing/view/pricing_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -99,6 +98,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   showChevron: true,
                   onTap: () => _showMockSnack('FAQ'),
                 ),
+                _SettingsTile(
+                  icon: Icons.star_border_rounded,
+                  title: 'Pricing Plan',
+                  foregroundColor: foregroundColor,
+                  showChevron: true,
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const PricingScreen(),
+                    ),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -143,11 +153,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: AppBottomNavigationBar(
-        selectedIndex: 4,
-        onDestinationSelected: (index) =>
-            navigateMainDestination(context, index, currentIndex: 4),
       ),
     );
   }

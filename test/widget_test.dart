@@ -572,7 +572,7 @@ void main() {
     expect(find.text('Step 1'), findsOneWidget);
   });
 
-  testWidgets('home star nav opens pricing plans', (tester) async {
+  testWidgets('settings pricing tile opens pricing plans', (tester) async {
     await tester.pumpWidget(const JobodiaApp());
     await tester.pumpAndSettle();
 
@@ -585,7 +585,9 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.star_border_rounded));
+    await tester.tap(find.byIcon(Icons.settings_outlined));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Pricing Plan'));
     await tester.pumpAndSettle();
 
     expect(find.text('Pricing Plan'), findsOneWidget);
@@ -664,6 +666,9 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
 
+    await tester.tap(find.byIcon(Icons.search_rounded));
+    await tester.pumpAndSettle();
+
     await tester.enterText(find.widgetWithText(TextField, 'Search jobs'), 'UX');
     await tester.pump();
 
@@ -690,6 +695,9 @@ void main() {
     await tester.pump();
 
     await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.search_rounded));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.filter_alt_rounded));

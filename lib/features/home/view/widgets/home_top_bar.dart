@@ -8,12 +8,14 @@ class HomeTopBar extends StatelessWidget {
     required this.name,
     required this.avatarUrl,
     required this.onNotifications,
+    required this.onSettings,
     super.key,
   });
 
   final String name;
   final String? avatarUrl;
   final VoidCallback onNotifications;
+  final VoidCallback onSettings;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,15 @@ class HomeTopBar extends StatelessWidget {
         IconButton(
           onPressed: onNotifications,
           icon: const Icon(Icons.notifications_none_rounded),
+          style: IconButton.styleFrom(
+            backgroundColor: const Color(0xFFF3F5F7),
+            foregroundColor: Colors.black,
+          ),
+        ),
+        const SizedBox(width: 8),
+        IconButton(
+          onPressed: onSettings,
+          icon: const Icon(Icons.settings_outlined),
           style: IconButton.styleFrom(
             backgroundColor: const Color(0xFFF3F5F7),
             foregroundColor: Colors.black,
